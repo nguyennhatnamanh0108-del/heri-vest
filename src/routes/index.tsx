@@ -7,13 +7,13 @@ import heroImg from "@/assets/hero-valley.jpg";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Aegis Nature — Crowdfunding for Conservation" },
+      { title: "Heri-Vest — Crowdfunding for Conservation" },
       {
         name: "description",
         content:
           "Direct funding for frontline conservationists restoring fragile ecosystems and protecting endangered species. Browse vetted campaigns and donate today.",
       },
-      { property: "og:title", content: "Aegis Nature — Crowdfunding for Conservation" },
+      { property: "og:title", content: "Heri-Vest — Crowdfunding for Conservation" },
       {
         property: "og:description",
         content:
@@ -90,7 +90,7 @@ function Index() {
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <div className="flex items-center gap-10">
             <a href="/" className="font-serif text-xl font-medium tracking-tight text-brand-green">
-              Aegis Nature
+              Heri-Vest
             </a>
             <ul className="hidden items-center gap-7 text-sm font-medium text-muted-foreground md:flex">
               <li>
@@ -325,7 +325,7 @@ function Index() {
         <div className="mx-auto max-w-7xl px-6">
           <div className="flex flex-col justify-between gap-12 md:flex-row">
             <div className="max-w-sm space-y-5">
-              <span className="font-serif text-2xl text-brand-green">Aegis Nature</span>
+              <span className="font-serif text-2xl text-brand-green">Heri-Vest</span>
               <p className="text-sm leading-relaxed text-muted-foreground">
                 A registered 501(c)(3) nonprofit dedicated to the preservation of Earth's most
                 critical wild spaces.
@@ -356,7 +356,7 @@ function Index() {
           </div>
           <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-border/60 pt-8 md:flex-row">
             <span className="text-xs text-muted-foreground">
-              © {new Date().getFullYear()} Aegis Nature Conservation Foundation.
+              © {new Date().getFullYear()} Heri-Vest Conservation Foundation.
             </span>
             <div className="flex gap-6 text-xs text-muted-foreground">
               <a href="#">Privacy Policy</a>
