@@ -179,7 +179,7 @@ function Index() {
       <header className="sticky top-0 z-50 border-b-4 border-ink bg-rice">
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <a href="/" className="flex items-center gap-2 font-serif text-2xl font-black text-jungle">
-            <span className="grid size-9 place-items-center rounded-full border-3 border-ink bg-bamboo text-cream">
+            <span className="grid size-9 place-items-center rounded-full border-[3px] border-ink bg-bamboo text-cream">
               <Leaf className="size-5 text-rice" />
             </span>
             Heri-Vest
@@ -202,7 +202,7 @@ function Index() {
           </ul>
           <a
             href="#campaigns"
-            className="rounded-full border-3 border-ink bg-lacquer px-5 py-2.5 text-sm font-black uppercase tracking-wide text-cream shadow-pop-sm transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none"
+            className="rounded-full border-[3px] border-ink bg-lacquer px-5 py-2.5 text-sm font-black uppercase tracking-wide text-cream shadow-pop-sm transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none"
           >
             Donate ❤
           </a>
@@ -218,7 +218,7 @@ function Index() {
 
         <div className="mx-auto grid max-w-7xl gap-12 px-6 py-16 md:py-24 lg:grid-cols-12 lg:gap-10">
           <div className="lg:col-span-7">
-            <span className="inline-flex items-center gap-2 rounded-full border-3 border-ink bg-cream px-4 py-1.5 text-xs font-black uppercase tracking-widest shadow-pop-sm">
+            <span className="inline-flex items-center gap-2 rounded-full border-[3px] border-ink bg-cream px-4 py-1.5 text-xs font-black uppercase tracking-widest shadow-pop-sm">
               <span className="size-2 animate-pulse rounded-full bg-lacquer" />
               42 live missions · Vietnam
             </span>
@@ -233,13 +233,13 @@ function Index() {
             <div className="mt-9 flex flex-wrap gap-4">
               <a
                 href="#campaigns"
-                className="rounded-full border-3 border-ink bg-jungle px-7 py-4 font-black uppercase tracking-wide text-cream shadow-pop transition hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
+                className="rounded-full border-[3px] border-ink bg-jungle px-7 py-4 font-black uppercase tracking-wide text-cream shadow-pop transition hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
               >
                 Find a project →
               </a>
               <a
                 href="#process"
-                className="rounded-full border-3 border-ink bg-cream px-7 py-4 font-black uppercase tracking-wide text-ink shadow-pop-sm transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none"
+                className="rounded-full border-[3px] border-ink bg-cream px-7 py-4 font-black uppercase tracking-wide text-ink shadow-pop-sm transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none"
               >
                 How it works
               </a>
@@ -247,7 +247,7 @@ function Index() {
             <div className="mt-10 flex flex-wrap items-center gap-6 text-sm font-bold text-ink/70">
               <div className="flex -space-x-2">
                 {["bg-rice", "bg-bamboo", "bg-lacquer", "bg-jungle"].map((c, i) => (
-                  <span key={i} className={`grid size-9 place-items-center rounded-full border-3 border-ink ${c} text-cream`}>
+                  <span key={i} className={`grid size-9 place-items-center rounded-full border-[3px] border-ink ${c} text-cream`}>
                     {["🦋", "🐘", "🐢", "🌿"][i]}
                   </span>
                 ))}
@@ -266,11 +266,11 @@ function Index() {
                 className="h-full w-full rounded-[2rem] object-cover"
               />
             </div>
-            <div className="absolute -bottom-6 -left-6 -rotate-6 rounded-2xl border-3 border-ink bg-rice px-5 py-4 shadow-pop-sm">
+            <div className="absolute -bottom-6 -left-6 -rotate-6 rounded-2xl border-[3px] border-ink bg-rice px-5 py-4 shadow-pop-sm">
               <div className="font-serif text-3xl font-black">12,400</div>
               <div className="text-[10px] font-black uppercase tracking-widest">Hectares saved 🌳</div>
             </div>
-            <div className="absolute -right-4 top-6 rotate-12 rounded-2xl border-3 border-ink bg-bamboo px-4 py-3 font-black text-cream shadow-pop-sm">
+            <div className="absolute -right-4 top-6 rotate-12 rounded-2xl border-[3px] border-ink bg-bamboo px-4 py-3 font-black text-cream shadow-pop-sm">
               100% transparent ✨
             </div>
           </div>
@@ -288,8 +288,8 @@ function Index() {
               key={c.label}
               className={
                 i === 0
-                  ? "rounded-full border-3 border-ink bg-rice px-4 py-2 text-sm font-black uppercase tracking-wide text-ink shadow-pop-sm"
-                  : "rounded-full border-3 border-ink/0 bg-jungle px-4 py-2 text-sm font-black uppercase tracking-wide text-cream/80 transition hover:border-ink hover:bg-cream hover:text-ink"
+                  ? "rounded-full border-[3px] border-ink bg-rice px-4 py-2 text-sm font-black uppercase tracking-wide text-ink shadow-pop-sm"
+                  : "rounded-full border-[3px] border-ink/0 bg-jungle px-4 py-2 text-sm font-black uppercase tracking-wide text-cream/80 transition hover:border-ink hover:bg-cream hover:text-ink"
               }
             >
               <span className="mr-1">{c.emoji}</span>
@@ -303,7 +303,7 @@ function Index() {
       <section id="campaigns" className="relative mx-auto max-w-7xl px-6 py-24">
         <Leaf className="pointer-events-none absolute right-8 top-12 size-20 rotate-12 text-bamboo/30" />
         <div className="mb-14 max-w-2xl">
-          <span className="inline-flex items-center gap-2 rounded-full border-3 border-ink bg-rice px-3 py-1 text-[11px] font-black uppercase tracking-widest shadow-pop-sm">
+          <span className="inline-flex items-center gap-2 rounded-full border-[3px] border-ink bg-rice px-3 py-1 text-[11px] font-black uppercase tracking-widest shadow-pop-sm">
             🔥 Needs help now
           </span>
           <h2 className="mt-4 font-serif text-5xl font-black md:text-6xl">
@@ -332,11 +332,11 @@ function Index() {
                     className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
                   <span
-                    className={`absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full border-3 border-ink ${accentBg[c.accent]} px-3 py-1 text-[11px] font-black uppercase tracking-wide shadow-pop-sm`}
+                    className={`absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full border-[3px] border-ink ${accentBg[c.accent]} px-3 py-1 text-[11px] font-black uppercase tracking-wide shadow-pop-sm`}
                   >
                     {c.emoji} {c.category} · {c.location}
                   </span>
-                  <span className="absolute bottom-4 right-4 rounded-full border-3 border-ink bg-cream px-3 py-1 text-xs font-black">
+                  <span className="absolute bottom-4 right-4 rounded-full border-[3px] border-ink bg-cream px-3 py-1 text-xs font-black">
                     ⏳ {c.daysLeft} days
                   </span>
                 </div>
@@ -356,7 +356,7 @@ function Index() {
                         of {fmt(c.goal)} · {pct}%
                       </span>
                     </div>
-                    <div className="h-4 w-full overflow-hidden rounded-full border-3 border-ink bg-cream">
+                    <div className="h-4 w-full overflow-hidden rounded-full border-[3px] border-ink bg-cream">
                       <div
                         className="h-full rounded-full bg-bamboo transition-all"
                         style={{ width: `${pct}%` }}
@@ -365,12 +365,12 @@ function Index() {
                   </div>
                   <div className="mt-6 flex items-center justify-between">
                     <div className="flex items-center gap-2 text-sm font-black">
-                      <span className="grid size-8 place-items-center rounded-full border-3 border-ink bg-rice">
+                      <span className="grid size-8 place-items-center rounded-full border-[3px] border-ink bg-rice">
                         👥
                       </span>
                       {c.donors.toLocaleString()} backers
                     </div>
-                    <button className="rounded-full border-3 border-ink bg-lacquer px-5 py-2.5 text-sm font-black uppercase tracking-wide text-cream shadow-pop-sm transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none">
+                    <button className="rounded-full border-[3px] border-ink bg-lacquer px-5 py-2.5 text-sm font-black uppercase tracking-wide text-cream shadow-pop-sm transition hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none">
                       Donate →
                     </button>
                   </div>
@@ -387,7 +387,7 @@ function Index() {
         <Turtle className="pointer-events-none absolute -bottom-6 right-6 size-48 text-rice md:size-60" />
         <div className="relative mx-auto max-w-7xl px-6 py-20">
           <div className="mb-12 max-w-2xl">
-            <span className="inline-flex items-center gap-2 rounded-full border-3 border-ink bg-rice px-3 py-1 text-[11px] font-black uppercase tracking-widest text-ink shadow-pop-sm">
+            <span className="inline-flex items-center gap-2 rounded-full border-[3px] border-ink bg-rice px-3 py-1 text-[11px] font-black uppercase tracking-widest text-ink shadow-pop-sm">
               📊 Real impact
             </span>
             <h2 className="mt-4 font-serif text-5xl font-black text-cream md:text-6xl">
@@ -423,7 +423,7 @@ function Index() {
       <section id="process" className="relative mx-auto max-w-7xl px-6 py-24">
         <Tiger className="pointer-events-none absolute -top-4 right-4 hidden size-32 rotate-6 text-rice md:block" />
         <div className="mb-14 max-w-xl">
-          <span className="inline-flex items-center gap-2 rounded-full border-3 border-ink bg-rice px-3 py-1 text-[11px] font-black uppercase tracking-widest shadow-pop-sm">
+          <span className="inline-flex items-center gap-2 rounded-full border-[3px] border-ink bg-rice px-3 py-1 text-[11px] font-black uppercase tracking-widest shadow-pop-sm">
             🧭 How it works
           </span>
           <h2 className="mt-4 font-serif text-5xl font-black md:text-6xl">
@@ -462,7 +462,7 @@ function Index() {
               className={`relative flex flex-col gap-3 rounded-[2rem] border-4 border-ink ${step.bg} p-7 shadow-pop transition hover:-translate-y-1`}
             >
               <div className="flex items-center gap-3">
-                <span className="grid size-12 place-items-center rounded-full border-3 border-ink bg-cream font-serif text-2xl font-black text-jungle">
+                <span className="grid size-12 place-items-center rounded-full border-[3px] border-ink bg-cream font-serif text-2xl font-black text-jungle">
                   {step.n}
                 </span>
                 <span className="text-3xl">{step.emoji}</span>
@@ -487,7 +487,7 @@ function Index() {
           </p>
           <a
             href="#campaigns"
-            className="mt-8 inline-flex rounded-full border-3 border-ink bg-jungle px-8 py-4 font-black uppercase tracking-wide text-cream shadow-pop transition hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
+            className="mt-8 inline-flex rounded-full border-[3px] border-ink bg-jungle px-8 py-4 font-black uppercase tracking-wide text-cream shadow-pop transition hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
           >
             Pick a mission 🐾
           </a>
@@ -500,7 +500,7 @@ function Index() {
           <div className="flex flex-col justify-between gap-12 md:flex-row">
             <div className="max-w-sm space-y-4">
               <span className="flex items-center gap-2 font-serif text-2xl font-black">
-                <span className="grid size-9 place-items-center rounded-full border-3 border-cream bg-rice">
+                <span className="grid size-9 place-items-center rounded-full border-[3px] border-cream bg-rice">
                   <Leaf className="size-5 text-jungle" />
                 </span>
                 Heri-Vest
