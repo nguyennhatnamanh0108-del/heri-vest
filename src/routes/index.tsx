@@ -213,7 +213,7 @@ function Index() {
       <section className="relative">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_10%,oklch(0.86_0.17_90/0.55),transparent_55%),radial-gradient(circle_at_85%_70%,oklch(0.55_0.14_150/0.4),transparent_55%)]" />
         <Sun className="pointer-events-none absolute right-10 top-10 size-24 text-rice" />
-        <Leaf className="pointer-events-none absolute left-6 top-40 size-16 -rotate-12 text-bamboo" />
+        <Leaf className="pointer-events-none absolute -left-8 top-44 hidden size-16 -rotate-12 text-bamboo lg:block" />
         <Leaf className="pointer-events-none absolute bottom-10 right-1/3 hidden size-20 rotate-45 text-jungle md:block" />
 
         <div className="mx-auto grid max-w-7xl gap-12 px-6 py-16 md:py-24 lg:grid-cols-12 lg:gap-10">
