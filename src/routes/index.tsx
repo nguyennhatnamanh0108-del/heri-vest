@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
 import mangroveAsset from "@/assets/mangrove-real.png.asset.json";
 import saolaAsset from "@/assets/saola-real.png.asset.json";
 import elephantsAsset from "@/assets/elephants-real.png.asset.json";
@@ -7,19 +6,21 @@ import heroImg from "@/assets/hero-valley.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
+    title: "Heri-Vest — Fund Vietnam's Wild Future",
     meta: [
-      { title: "Heri-Vest — Fund Vietnam's Wild Future" },
       {
         name: "description",
         content:
           "A modern giving platform for Vietnam's conservation frontlines. Fund rangers, scientists and local heroes protecting jungles, oceans and wildlife.",
       },
       { property: "og:title", content: "Heri-Vest — Fund Vietnam's Wild Future" },
+      { property: "og:type", content: "website" },
       {
         property: "og:description",
         content:
           "A modern giving platform for Vietnam's conservation frontlines. Transparent, tracked, and made for the next generation of givers.",
       },
+      { name: "twitter:card", content: "summary_large_image" },
       { property: "og:image", content: heroImg },
       { name: "twitter:image", content: heroImg },
     ],
@@ -51,10 +52,10 @@ const campaigns: Campaign[] = [
     title: "Restore 5,000 Mangrove Saplings",
     blurb:
       "Rebuild the coastal forest that shelters juvenile fish and shields fishing villages from storm surges.",
-    raised: 14200,
+    raised: 0,
     goal: 20000,
-    donors: 412,
-    daysLeft: 12,
+    donors: 0,
+    daysLeft: 0,
   },
   {
     image: saolaAsset.url,
@@ -65,10 +66,10 @@ const campaigns: Campaign[] = [
     title: "Protect the Elusive Saola",
     blurb:
       "Equip anti-poaching night patrols and expand a camera-trap grid for the rarest large mammal on Earth.",
-    raised: 48900,
+    raised: 0,
     goal: 60000,
-    donors: 1102,
-    daysLeft: 4,
+    donors: 0,
+    daysLeft: 0,
   },
   {
     image: elephantsAsset.url,
@@ -79,10 +80,10 @@ const campaigns: Campaign[] = [
     title: "Return 400 Hectares to Elephants",
     blurb:
       "Secure protected corridor so rescued Asian elephants can forage, roam, and live in a real wild home.",
-    raised: 152000,
+    raised: 0,
     goal: 400000,
-    donors: 894,
-    daysLeft: 28,
+    donors: 0,
+    daysLeft: 0,
   },
 ];
 
@@ -122,12 +123,6 @@ function Wiggle({ className = "" }: { className?: string }) {
 /* -------------------- Page -------------------- */
 
 function Index() {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    const t = requestAnimationFrame(() => setMounted(true));
-    return () => cancelAnimationFrame(t);
-  }, []);
-
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
       {/* Nav */}
@@ -181,7 +176,7 @@ function Index() {
           <div className="lg:col-span-7">
             <span className="inline-flex items-center gap-2 rounded-full border border-border bg-cream px-3.5 py-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-foreground/70">
               <span className="size-1.5 animate-pulse rounded-full bg-lacquer" />
-              42 live missions · Vietnam
+              Launching soon · Vietnam
             </span>
             <h1 className="mt-6 font-serif text-5xl leading-[1.02] tracking-tight md:text-6xl lg:text-7xl">
               Fund the people saving Vietnam's{" "}
@@ -221,7 +216,7 @@ function Index() {
                   </span>
                 ))}
               </div>
-              <span className="font-semibold">Trusted by 62,000+ givers worldwide</span>
+              <span className="font-semibold">0 givers so far · pre-launch</span>
             </div>
           </div>
 
@@ -236,7 +231,7 @@ function Index() {
               />
             </div>
             <div className="absolute -bottom-5 -left-5 rounded-2xl border border-border bg-cream px-5 py-4 shadow-pop">
-              <div className="font-serif text-3xl font-semibold text-jungle">12,400</div>
+              <div className="font-serif text-3xl font-semibold text-jungle">0</div>
               <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-foreground/60">
                 Hectares protected
               </div>
@@ -289,7 +284,7 @@ function Index() {
             href="#"
             className="text-sm font-semibold text-jungle underline-offset-4 hover:underline"
           >
-            View all 42 projects →
+            View launch projects →
           </a>
         </div>
 
@@ -316,7 +311,7 @@ function Index() {
                     {c.category} · {c.location}
                   </span>
                   <span className="absolute bottom-4 right-4 rounded-full bg-ink/85 px-2.5 py-1 text-[11px] font-semibold text-cream backdrop-blur">
-                    {c.daysLeft} days left
+                    Pre-launch
                   </span>
                 </div>
                 <div className="flex flex-1 flex-col p-6">
@@ -338,7 +333,7 @@ function Index() {
                     <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
                       <div
                         className="h-full rounded-full bg-bamboo transition-[width] duration-1000 ease-out"
-                        style={{ width: `${mounted ? pct : 0}%` }}
+                        style={{ width: `${pct}%` }}
                       />
                     </div>
                   </div>
@@ -363,13 +358,13 @@ function Index() {
           <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
             <div className="max-w-2xl">
               <span className="inline-flex items-center gap-2 rounded-full border border-cream/20 bg-cream/5 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-rice">
-                Impact report · Q3 2026
+                Pre-launch impact
               </span>
               <h2 className="mt-4 font-serif text-4xl tracking-tight md:text-5xl">
                 Numbers we <span className="italic text-rice">stand behind</span>.
               </h2>
               <p className="mt-3 max-w-xl text-cream/70">
-                Independently audited. Updated monthly. Sourced from the field teams delivering the work.
+                Tracking will begin at launch, with every funded project updated from the field.
               </p>
             </div>
             <a
