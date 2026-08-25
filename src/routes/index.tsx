@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import mangroveImg from "@/assets/mangrove.jpg";
-import snowLeopardImg from "@/assets/snow-leopard.jpg";
-import redwoodsImg from "@/assets/redwoods.jpg";
+import { useEffect, useState } from "react";
+import mangroveAsset from "@/assets/mangrove-real.png.asset.json";
+import saolaAsset from "@/assets/saola-real.png.asset.json";
+import elephantsAsset from "@/assets/elephants-real.png.asset.json";
 import heroImg from "@/assets/hero-valley.jpg";
 
 export const Route = createFileRoute("/")({
