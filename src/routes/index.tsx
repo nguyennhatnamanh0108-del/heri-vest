@@ -376,10 +376,10 @@ function Index() {
           </div>
           <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
             {[
-              { v: "$4.2M", l: "Deployed to the field" },
-              { v: "124", l: "Species protected" },
-              { v: "18k", l: "Hectares restored" },
-              { v: "62k", l: "Active backers" },
+              { v: "$0", l: "Deployed to the field" },
+              { v: "0", l: "Species protected" },
+              { v: "0", l: "Hectares restored" },
+              { v: "0", l: "Active backers" },
             ].map((s) => (
               <div
                 key={s.l}
