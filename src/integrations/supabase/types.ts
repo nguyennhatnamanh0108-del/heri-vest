@@ -14,7 +14,98 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      campaigns: {
+        Row: {
+          blurb: string
+          category: string
+          created_at: string
+          donor_count: number
+          emoji: string
+          goal_amount: number
+          hectares_goal: number
+          hectares_restored: number
+          id: string
+          image_focus: string
+          location: string
+          raised_amount: number
+          slug: string
+          sort_order: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          blurb?: string
+          category?: string
+          created_at?: string
+          donor_count?: number
+          emoji?: string
+          goal_amount?: number
+          hectares_goal?: number
+          hectares_restored?: number
+          id?: string
+          image_focus?: string
+          location?: string
+          raised_amount?: number
+          slug: string
+          sort_order?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          blurb?: string
+          category?: string
+          created_at?: string
+          donor_count?: number
+          emoji?: string
+          goal_amount?: number
+          hectares_goal?: number
+          hectares_restored?: number
+          id?: string
+          image_focus?: string
+          location?: string
+          raised_amount?: number
+          slug?: string
+          sort_order?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      donations: {
+        Row: {
+          amount: number
+          campaign_id: string
+          created_at: string
+          donor_name: string
+          id: string
+          message: string | null
+        }
+        Insert: {
+          amount: number
+          campaign_id: string
+          created_at?: string
+          donor_name?: string
+          id?: string
+          message?: string | null
+        }
+        Update: {
+          amount?: number
+          campaign_id?: string
+          created_at?: string
+          donor_name?: string
+          id?: string
+          message?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "donations_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
