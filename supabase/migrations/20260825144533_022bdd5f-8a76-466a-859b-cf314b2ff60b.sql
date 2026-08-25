@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.apply_donation_to_campaign() FROM anon, authenticated, PUBLIC;
