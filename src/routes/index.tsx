@@ -29,6 +29,7 @@ export const Route = createFileRoute("/")({
 
 type Campaign = {
   image: string;
+  focus: string;
   emoji: string;
   category: string;
   location: string;
@@ -42,7 +43,8 @@ type Campaign = {
 
 const campaigns: Campaign[] = [
   {
-    image: mangroveImg,
+    image: mangroveAsset.url,
+    focus: "center 40%",
     emoji: "🌊",
     category: "Oceans",
     location: "Hạ Long Bay",
@@ -55,7 +57,8 @@ const campaigns: Campaign[] = [
     daysLeft: 12,
   },
   {
-    image: snowLeopardImg,
+    image: saolaAsset.url,
+    focus: "center",
     emoji: "🐾",
     category: "Wildlife",
     location: "Pù Mát",
@@ -68,7 +71,8 @@ const campaigns: Campaign[] = [
     daysLeft: 4,
   },
   {
-    image: redwoodsImg,
+    image: elephantsAsset.url,
+    focus: "center 55%",
     emoji: "🐘",
     category: "Forests",
     location: "Yok Đôn",
@@ -118,6 +122,12 @@ function Wiggle({ className = "" }: { className?: string }) {
 /* -------------------- Page -------------------- */
 
 function Index() {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    const t = requestAnimationFrame(() => setMounted(true));
+    return () => cancelAnimationFrame(t);
+  }, []);
+
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
       {/* Nav */}
@@ -298,7 +308,8 @@ function Index() {
                     width={1200}
                     height={960}
                     loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    style={{ objectPosition: c.focus }}
+                    className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
                   />
                   <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-background/95 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide backdrop-blur">
                     <span>{c.emoji}</span>
@@ -326,8 +337,8 @@ function Index() {
                     </div>
                     <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
                       <div
-                        className="h-full rounded-full bg-bamboo transition-all"
-                        style={{ width: `${pct}%` }}
+                        className="h-full rounded-full bg-bamboo transition-[width] duration-1000 ease-out"
+                        style={{ width: `${mounted ? pct : 0}%` }}
                       />
                     </div>
                   </div>
