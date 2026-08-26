@@ -326,16 +326,16 @@ function Index() {
           </div>
           <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
             {[
-              { v: "$0", l: "Deployed to the field" },
-              { v: "0", l: "Species protected" },
-              { v: "0", l: "Hectares restored" },
-              { v: "0", l: "Active backers" },
+              { v: fmt(totals.raised), l: "Deployed to the field" },
+              { v: String(totals.speciesProtected), l: "Species protected" },
+              { v: Math.round(totals.hectares).toLocaleString(), l: "Hectares restored" },
+              { v: totals.donors.toLocaleString(), l: "Active backers" },
             ].map((s) => (
               <div
                 key={s.l}
                 className="rounded-2xl border border-cream/15 bg-cream/[0.04] p-6 backdrop-blur-sm"
               >
-                <div className="font-serif text-4xl font-semibold text-cream md:text-5xl">
+                <div className="font-serif text-4xl font-semibold text-cream transition-all duration-500 md:text-5xl">
                   {s.v}
                 </div>
                 <div className="mt-2 text-xs font-semibold uppercase tracking-[0.14em] text-cream/60">
@@ -344,6 +344,7 @@ function Index() {
               </div>
             ))}
           </div>
+
         </div>
       </section>
 
