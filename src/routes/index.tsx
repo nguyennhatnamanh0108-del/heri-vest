@@ -239,67 +239,103 @@ function Index() {
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {campaigns.map((c) => {
-            const pct = Math.min(100, Math.round((c.raised / c.goal) * 100));
-            return (
-              <article
-                key={c.title}
-                className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-cream transition hover:-translate-y-1 hover:shadow-pop-lg"
-              >
-                <div className="relative aspect-[5/4] overflow-hidden">
-                  <img
-                    src={c.image}
-                    alt={c.title}
-                    width={1200}
-                    height={960}
-                    loading="lazy"
-                    style={{ objectPosition: c.focus }}
-                    className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-background/95 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide backdrop-blur">
-                    <span>{c.emoji}</span>
-                    {c.category} · {c.location}
-                  </span>
-                  <span className="absolute bottom-4 right-4 rounded-full bg-ink/85 px-2.5 py-1 text-[11px] font-semibold text-cream backdrop-blur">
-                    Pre-launch
-                  </span>
-                </div>
-                <div className="flex flex-1 flex-col p-6">
-                  <h3 className="font-serif text-xl leading-snug tracking-tight group-hover:text-bamboo">
-                    {c.title}
-                  </h3>
-                  <p className="mt-2.5 text-sm leading-relaxed text-foreground/65">
-                    {c.blurb}
-                  </p>
-                  <div className="mt-5">
-                    <div className="mb-2 flex items-end justify-between">
-                      <span className="font-serif text-2xl font-semibold text-jungle">
-                        {fmt(c.raised)}
-                      </span>
-                      <span className="text-xs font-semibold text-foreground/55">
-                        of {fmt(c.goal)} · {pct}%
-                      </span>
-                    </div>
-                    <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
-                      <div
-                        className="h-full rounded-full bg-bamboo transition-[width] duration-1000 ease-out"
-                        style={{ width: `${pct}%` }}
+          {loading && campaigns.length === 0
+            ? [0, 1, 2].map((i) => (
+                <div
+                  key={i}
+                  className="h-[520px] animate-pulse rounded-2xl border border-border bg-muted/40"
+                />
+              ))
+            : campaigns.map((c) => {
+                const goal = Number(c.goal_amount) || 0;
+                const raised = Number(c.raised_amount) || 0;
+                const pct = goal > 0 ? Math.min(100, Math.round((raised / goal) * 100)) : 0;
+                return (
+                  <article
+                    key={c.id}
+                    className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-cream transition hover:-translate-y-1 hover:shadow-pop-lg"
+                  >
+                    <div className="relative aspect-[5/4] overflow-hidden">
+                      <img
+                        src={imageBySlug[c.slug] ?? heroImg}
+                        alt={c.title}
+                        width={1200}
+                        height={960}
+                        loading="lazy"
+                        style={{ objectPosition: c.image_focus }}
+                        className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
                       />
+                      <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-background/95 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide backdrop-blur">
+                        <span>{c.emoji}</span>
+                        {c.category} · {c.location}
+                      </span>
+                      <span className="absolute bottom-4 right-4 inline-flex items-center gap-1.5 rounded-full bg-ink/85 px-2.5 py-1 text-[11px] font-semibold text-cream backdrop-blur">
+                        <span className="size-1.5 animate-pulse rounded-full bg-rice" />
+                        Live
+                      </span>
                     </div>
-                  </div>
-                  <div className="mt-5 flex items-center justify-between border-t border-border/70 pt-4">
-                    <div className="text-xs font-semibold text-foreground/60">
-                      <span className="text-foreground">{c.donors.toLocaleString()}</span> backers
+                    <div className="flex flex-1 flex-col p-6">
+                      <h3 className="font-serif text-xl leading-snug tracking-tight group-hover:text-bamboo">
+                        {c.title}
+                      </h3>
+                      <p className="mt-2.5 text-sm leading-relaxed text-foreground/65">
+                        {c.blurb}
+                      </p>
+                      <div className="mt-5">
+                        <div className="mb-2 flex items-end justify-between">
+                          <span className="font-serif text-2xl font-semibold text-jungle">
+                            {fmt(raised)}
+                          </span>
+                          <span className="text-xs font-semibold text-foreground/55">
+                            of {fmt(goal)} · {pct}%
+                          </span>
+                        </div>
+                        <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
+                          <div
+                            className="h-full rounded-full bg-bamboo transition-[width] duration-700 ease-out"
+                            style={{ width: `${pct}%` }}
+                          />
+                        </div>
+                      </div>
+                      <div className="mt-auto pt-5">
+                        <div className="mb-3 flex items-center justify-between border-t border-border/70 pt-4 text-xs font-semibold text-foreground/60">
+                          <span>
+                            <span className="text-foreground">
+                              {c.donor_count.toLocaleString()}
+                            </span>{" "}
+                            backers
+                          </span>
+                          <span>
+                            {Math.round(Number(c.hectares_restored)).toLocaleString()} /{" "}
+                            {Math.round(Number(c.hectares_goal)).toLocaleString()} ha
+                          </span>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {donationPresets.map((amt) => (
+                            <button
+                              key={amt}
+                              onClick={() => void handleDonate(c.id, amt)}
+                              disabled={pending === c.id}
+                              className="inline-flex flex-1 items-center justify-center rounded-full border border-border bg-background px-3 py-2 text-xs font-semibold transition hover:border-jungle hover:text-jungle disabled:opacity-50"
+                            >
+                              ${amt}
+                            </button>
+                          ))}
+                          <button
+                            onClick={() => void handleDonate(c.id)}
+                            disabled={pending === c.id}
+                            className="inline-flex items-center gap-1.5 rounded-full bg-lacquer px-4 py-2 text-xs font-semibold uppercase tracking-wide text-cream transition hover:bg-lacquer/90 disabled:opacity-50"
+                          >
+                            {pending === c.id ? "Sending…" : "Donate →"}
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                    <button className="inline-flex items-center gap-1.5 rounded-full bg-lacquer px-4 py-2 text-xs font-semibold uppercase tracking-wide text-cream transition hover:bg-lacquer/90">
-                      Donate →
-                    </button>
-                  </div>
-                </div>
-              </article>
-            );
-          })}
+                  </article>
+                );
+              })}
         </div>
+
       </section>
 
       {/* Impact */}
