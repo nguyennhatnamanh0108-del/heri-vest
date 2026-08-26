@@ -388,13 +388,14 @@ function Index() {
           <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
             <div className="max-w-2xl">
               <span className="inline-flex items-center gap-2 rounded-full border border-cream/20 bg-cream/5 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-rice">
-                Pre-launch impact
+                Live impact
               </span>
               <h2 className="mt-4 font-serif text-4xl tracking-tight md:text-5xl">
                 Numbers we <span className="italic text-rice">stand behind</span>.
               </h2>
               <p className="mt-3 max-w-xl text-cream/70">
-                Tracking will begin at launch, with every funded project updated from the field.
+                These totals update the moment a donation lands — no refresh needed.
+
               </p>
             </div>
             <a
