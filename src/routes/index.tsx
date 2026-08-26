@@ -28,64 +28,14 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-type Campaign = {
-  image: string;
-  focus: string;
-  emoji: string;
-  category: string;
-  location: string;
-  title: string;
-  blurb: string;
-  raised: number;
-  goal: number;
-  donors: number;
-  daysLeft: number;
+const imageBySlug: Record<string, string> = {
+  "mangrove-halong": mangroveAsset.url,
+  "saola-pu-mat": saolaAsset.url,
+  "elephants-yok-don": elephantsAsset.url,
 };
 
-const campaigns: Campaign[] = [
-  {
-    image: mangroveAsset.url,
-    focus: "center 40%",
-    emoji: "🌊",
-    category: "Oceans",
-    location: "Hạ Long Bay",
-    title: "Restore 5,000 Mangrove Saplings",
-    blurb:
-      "Rebuild the coastal forest that shelters juvenile fish and shields fishing villages from storm surges.",
-    raised: 0,
-    goal: 20000,
-    donors: 0,
-    daysLeft: 0,
-  },
-  {
-    image: saolaAsset.url,
-    focus: "center",
-    emoji: "🐾",
-    category: "Wildlife",
-    location: "Pù Mát",
-    title: "Protect the Elusive Saola",
-    blurb:
-      "Equip anti-poaching night patrols and expand a camera-trap grid for the rarest large mammal on Earth.",
-    raised: 0,
-    goal: 60000,
-    donors: 0,
-    daysLeft: 0,
-  },
-  {
-    image: elephantsAsset.url,
-    focus: "center 55%",
-    emoji: "🐘",
-    category: "Forests",
-    location: "Yok Đôn",
-    title: "Return 400 Hectares to Elephants",
-    blurb:
-      "Secure protected corridor so rescued Asian elephants can forage, roam, and live in a real wild home.",
-    raised: 0,
-    goal: 400000,
-    donors: 0,
-    daysLeft: 0,
-  },
-];
+const donationPresets = [25, 50, 100, 250];
+
 
 const categories = [
   { label: "All", emoji: "✦" },
