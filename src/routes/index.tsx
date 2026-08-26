@@ -204,7 +204,10 @@ function Index() {
                   </span>
                 ))}
               </div>
-              <span className="font-semibold">0 givers so far · pre-launch</span>
+              <span className="font-semibold">
+                {totals.donors.toLocaleString()} givers so far · updating live
+              </span>
+
             </div>
           </div>
 
