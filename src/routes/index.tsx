@@ -73,7 +73,41 @@ function Wiggle({ className = "" }: { className?: string }) {
 /* -------------------- Page -------------------- */
 
 function Index() {
+  const { campaigns, loading, donate } = useLiveCampaigns();
+  const [pending, setPending] = useState<string | null>(null);
+
+  const totals = campaigns.reduce(
+    (acc, c) => ({
+      raised: acc.raised + Number(c.raised_amount),
+      donors: acc.donors + c.donor_count,
+      hectares: acc.hectares + Number(c.hectares_restored),
+      speciesProtected:
+        acc.speciesProtected + (Number(c.raised_amount) > 0 ? 1 : 0),
+    }),
+    { raised: 0, donors: 0, hectares: 0, speciesProtected: 0 },
+  );
+
+  async function handleDonate(campaignId: string, amount?: number) {
+    let value = amount;
+    if (value == null) {
+      const input = window.prompt("Donation amount in USD", "75");
+      if (!input) return;
+      value = Number(input);
+      if (!Number.isFinite(value) || value <= 0) return;
+    }
+    setPending(campaignId);
+    try {
+      await donate(campaignId, value);
+      toast.success(`Thank you! $${value.toLocaleString()} added to this project.`);
+    } catch {
+      toast.error("Could not record that donation. Please try again.");
+    } finally {
+      setPending(null);
+    }
+  }
+
   return (
+
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
       {/* Nav */}
       <header className="sticky top-0 z-50 border-b border-border/70 bg-background/85 backdrop-blur-md">
