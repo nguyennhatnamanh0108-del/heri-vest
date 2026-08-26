@@ -222,7 +222,10 @@ function Index() {
               />
             </div>
             <div className="absolute -bottom-5 -left-5 rounded-2xl border border-border bg-cream px-5 py-4 shadow-pop">
-              <div className="font-serif text-3xl font-semibold text-jungle">0</div>
+              <div className="font-serif text-3xl font-semibold text-jungle">
+                {Math.round(totals.hectares).toLocaleString()}
+              </div>
+
               <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-foreground/60">
                 Hectares protected
               </div>
