@@ -1,4 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+import { toast } from "sonner";
+import { useLiveCampaigns } from "@/lib/useLiveCampaigns";
+
 import mangroveAsset from "@/assets/mangrove-real.png.asset.json";
 import saolaAsset from "@/assets/saola-real.png.asset.json";
 import elephantsAsset from "@/assets/elephants-real.png.asset.json";
@@ -28,64 +32,14 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-type Campaign = {
-  image: string;
-  focus: string;
-  emoji: string;
-  category: string;
-  location: string;
-  title: string;
-  blurb: string;
-  raised: number;
-  goal: number;
-  donors: number;
-  daysLeft: number;
+const imageBySlug: Record<string, string> = {
+  "mangrove-halong": mangroveAsset.url,
+  "saola-pu-mat": saolaAsset.url,
+  "elephants-yok-don": elephantsAsset.url,
 };
 
-const campaigns: Campaign[] = [
-  {
-    image: mangroveAsset.url,
-    focus: "center 40%",
-    emoji: "🌊",
-    category: "Oceans",
-    location: "Hạ Long Bay",
-    title: "Restore 5,000 Mangrove Saplings",
-    blurb:
-      "Rebuild the coastal forest that shelters juvenile fish and shields fishing villages from storm surges.",
-    raised: 0,
-    goal: 20000,
-    donors: 0,
-    daysLeft: 0,
-  },
-  {
-    image: saolaAsset.url,
-    focus: "center",
-    emoji: "🐾",
-    category: "Wildlife",
-    location: "Pù Mát",
-    title: "Protect the Elusive Saola",
-    blurb:
-      "Equip anti-poaching night patrols and expand a camera-trap grid for the rarest large mammal on Earth.",
-    raised: 0,
-    goal: 60000,
-    donors: 0,
-    daysLeft: 0,
-  },
-  {
-    image: elephantsAsset.url,
-    focus: "center 55%",
-    emoji: "🐘",
-    category: "Forests",
-    location: "Yok Đôn",
-    title: "Return 400 Hectares to Elephants",
-    blurb:
-      "Secure protected corridor so rescued Asian elephants can forage, roam, and live in a real wild home.",
-    raised: 0,
-    goal: 400000,
-    donors: 0,
-    daysLeft: 0,
-  },
-];
+const donationPresets = [25, 50, 100, 250];
+
 
 const categories = [
   { label: "All", emoji: "✦" },
@@ -123,7 +77,41 @@ function Wiggle({ className = "" }: { className?: string }) {
 /* -------------------- Page -------------------- */
 
 function Index() {
+  const { campaigns, loading, donate } = useLiveCampaigns();
+  const [pending, setPending] = useState<string | null>(null);
+
+  const totals = campaigns.reduce(
+    (acc, c) => ({
+      raised: acc.raised + Number(c.raised_amount),
+      donors: acc.donors + c.donor_count,
+      hectares: acc.hectares + Number(c.hectares_restored),
+      speciesProtected:
+        acc.speciesProtected + (Number(c.raised_amount) > 0 ? 1 : 0),
+    }),
+    { raised: 0, donors: 0, hectares: 0, speciesProtected: 0 },
+  );
+
+  async function handleDonate(campaignId: string, amount?: number) {
+    let value = amount;
+    if (value == null) {
+      const input = window.prompt("Donation amount in USD", "75");
+      if (!input) return;
+      value = Number(input);
+      if (!Number.isFinite(value) || value <= 0) return;
+    }
+    setPending(campaignId);
+    try {
+      await donate(campaignId, value);
+      toast.success(`Thank you! $${value.toLocaleString()} added to this project.`);
+    } catch {
+      toast.error("Could not record that donation. Please try again.");
+    } finally {
+      setPending(null);
+    }
+  }
+
   return (
+
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
       {/* Nav */}
       <header className="sticky top-0 z-50 border-b border-border/70 bg-background/85 backdrop-blur-md">
@@ -216,7 +204,10 @@ function Index() {
                   </span>
                 ))}
               </div>
-              <span className="font-semibold">0 givers so far · pre-launch</span>
+              <span className="font-semibold">
+                {totals.donors.toLocaleString()} givers so far · updating live
+              </span>
+
             </div>
           </div>
 
@@ -231,7 +222,10 @@ function Index() {
               />
             </div>
             <div className="absolute -bottom-5 -left-5 rounded-2xl border border-border bg-cream px-5 py-4 shadow-pop">
-              <div className="font-serif text-3xl font-semibold text-jungle">0</div>
+              <div className="font-serif text-3xl font-semibold text-jungle">
+                {Math.round(totals.hectares).toLocaleString()}
+              </div>
+
               <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-foreground/60">
                 Hectares protected
               </div>
@@ -289,67 +283,103 @@ function Index() {
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {campaigns.map((c) => {
-            const pct = Math.min(100, Math.round((c.raised / c.goal) * 100));
-            return (
-              <article
-                key={c.title}
-                className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-cream transition hover:-translate-y-1 hover:shadow-pop-lg"
-              >
-                <div className="relative aspect-[5/4] overflow-hidden">
-                  <img
-                    src={c.image}
-                    alt={c.title}
-                    width={1200}
-                    height={960}
-                    loading="lazy"
-                    style={{ objectPosition: c.focus }}
-                    className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-background/95 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide backdrop-blur">
-                    <span>{c.emoji}</span>
-                    {c.category} · {c.location}
-                  </span>
-                  <span className="absolute bottom-4 right-4 rounded-full bg-ink/85 px-2.5 py-1 text-[11px] font-semibold text-cream backdrop-blur">
-                    Pre-launch
-                  </span>
-                </div>
-                <div className="flex flex-1 flex-col p-6">
-                  <h3 className="font-serif text-xl leading-snug tracking-tight group-hover:text-bamboo">
-                    {c.title}
-                  </h3>
-                  <p className="mt-2.5 text-sm leading-relaxed text-foreground/65">
-                    {c.blurb}
-                  </p>
-                  <div className="mt-5">
-                    <div className="mb-2 flex items-end justify-between">
-                      <span className="font-serif text-2xl font-semibold text-jungle">
-                        {fmt(c.raised)}
-                      </span>
-                      <span className="text-xs font-semibold text-foreground/55">
-                        of {fmt(c.goal)} · {pct}%
-                      </span>
-                    </div>
-                    <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
-                      <div
-                        className="h-full rounded-full bg-bamboo transition-[width] duration-1000 ease-out"
-                        style={{ width: `${pct}%` }}
+          {loading && campaigns.length === 0
+            ? [0, 1, 2].map((i) => (
+                <div
+                  key={i}
+                  className="h-[520px] animate-pulse rounded-2xl border border-border bg-muted/40"
+                />
+              ))
+            : campaigns.map((c) => {
+                const goal = Number(c.goal_amount) || 0;
+                const raised = Number(c.raised_amount) || 0;
+                const pct = goal > 0 ? Math.min(100, Math.round((raised / goal) * 100)) : 0;
+                return (
+                  <article
+                    key={c.id}
+                    className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-cream transition hover:-translate-y-1 hover:shadow-pop-lg"
+                  >
+                    <div className="relative aspect-[5/4] overflow-hidden">
+                      <img
+                        src={imageBySlug[c.slug] ?? heroImg}
+                        alt={c.title}
+                        width={1200}
+                        height={960}
+                        loading="lazy"
+                        style={{ objectPosition: c.image_focus }}
+                        className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
                       />
+                      <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-background/95 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide backdrop-blur">
+                        <span>{c.emoji}</span>
+                        {c.category} · {c.location}
+                      </span>
+                      <span className="absolute bottom-4 right-4 inline-flex items-center gap-1.5 rounded-full bg-ink/85 px-2.5 py-1 text-[11px] font-semibold text-cream backdrop-blur">
+                        <span className="size-1.5 animate-pulse rounded-full bg-rice" />
+                        Live
+                      </span>
                     </div>
-                  </div>
-                  <div className="mt-5 flex items-center justify-between border-t border-border/70 pt-4">
-                    <div className="text-xs font-semibold text-foreground/60">
-                      <span className="text-foreground">{c.donors.toLocaleString()}</span> backers
+                    <div className="flex flex-1 flex-col p-6">
+                      <h3 className="font-serif text-xl leading-snug tracking-tight group-hover:text-bamboo">
+                        {c.title}
+                      </h3>
+                      <p className="mt-2.5 text-sm leading-relaxed text-foreground/65">
+                        {c.blurb}
+                      </p>
+                      <div className="mt-5">
+                        <div className="mb-2 flex items-end justify-between">
+                          <span className="font-serif text-2xl font-semibold text-jungle">
+                            {fmt(raised)}
+                          </span>
+                          <span className="text-xs font-semibold text-foreground/55">
+                            of {fmt(goal)} · {pct}%
+                          </span>
+                        </div>
+                        <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
+                          <div
+                            className="h-full rounded-full bg-bamboo transition-[width] duration-700 ease-out"
+                            style={{ width: `${pct}%` }}
+                          />
+                        </div>
+                      </div>
+                      <div className="mt-auto pt-5">
+                        <div className="mb-3 flex items-center justify-between border-t border-border/70 pt-4 text-xs font-semibold text-foreground/60">
+                          <span>
+                            <span className="text-foreground">
+                              {c.donor_count.toLocaleString()}
+                            </span>{" "}
+                            backers
+                          </span>
+                          <span>
+                            {Math.round(Number(c.hectares_restored)).toLocaleString()} /{" "}
+                            {Math.round(Number(c.hectares_goal)).toLocaleString()} ha
+                          </span>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {donationPresets.map((amt) => (
+                            <button
+                              key={amt}
+                              onClick={() => void handleDonate(c.id, amt)}
+                              disabled={pending === c.id}
+                              className="inline-flex flex-1 items-center justify-center rounded-full border border-border bg-background px-3 py-2 text-xs font-semibold transition hover:border-jungle hover:text-jungle disabled:opacity-50"
+                            >
+                              ${amt}
+                            </button>
+                          ))}
+                          <button
+                            onClick={() => void handleDonate(c.id)}
+                            disabled={pending === c.id}
+                            className="inline-flex items-center gap-1.5 rounded-full bg-lacquer px-4 py-2 text-xs font-semibold uppercase tracking-wide text-cream transition hover:bg-lacquer/90 disabled:opacity-50"
+                          >
+                            {pending === c.id ? "Sending…" : "Donate →"}
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                    <button className="inline-flex items-center gap-1.5 rounded-full bg-lacquer px-4 py-2 text-xs font-semibold uppercase tracking-wide text-cream transition hover:bg-lacquer/90">
-                      Donate →
-                    </button>
-                  </div>
-                </div>
-              </article>
-            );
-          })}
+                  </article>
+                );
+              })}
         </div>
+
       </section>
 
       {/* Impact */}
@@ -358,13 +388,14 @@ function Index() {
           <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
             <div className="max-w-2xl">
               <span className="inline-flex items-center gap-2 rounded-full border border-cream/20 bg-cream/5 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-rice">
-                Pre-launch impact
+                Live impact
               </span>
               <h2 className="mt-4 font-serif text-4xl tracking-tight md:text-5xl">
                 Numbers we <span className="italic text-rice">stand behind</span>.
               </h2>
               <p className="mt-3 max-w-xl text-cream/70">
-                Tracking will begin at launch, with every funded project updated from the field.
+                These totals update the moment a donation lands — no refresh needed.
+
               </p>
             </div>
             <a
@@ -376,16 +407,16 @@ function Index() {
           </div>
           <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
             {[
-              { v: "$0", l: "Deployed to the field" },
-              { v: "0", l: "Species protected" },
-              { v: "0", l: "Hectares restored" },
-              { v: "0", l: "Active backers" },
+              { v: fmt(totals.raised), l: "Deployed to the field" },
+              { v: String(totals.speciesProtected), l: "Species protected" },
+              { v: Math.round(totals.hectares).toLocaleString(), l: "Hectares restored" },
+              { v: totals.donors.toLocaleString(), l: "Active backers" },
             ].map((s) => (
               <div
                 key={s.l}
                 className="rounded-2xl border border-cream/15 bg-cream/[0.04] p-6 backdrop-blur-sm"
               >
-                <div className="font-serif text-4xl font-semibold text-cream md:text-5xl">
+                <div className="font-serif text-4xl font-semibold text-cream transition-all duration-500 md:text-5xl">
                   {s.v}
                 </div>
                 <div className="mt-2 text-xs font-semibold uppercase tracking-[0.14em] text-cream/60">
@@ -394,6 +425,7 @@ function Index() {
               </div>
             ))}
           </div>
+
         </div>
       </section>
 
