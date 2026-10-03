@@ -1,7 +1,9 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 import { useLiveCampaigns } from "@/lib/useLiveCampaigns";
+import { useSession } from "@/lib/useSession";
 
 import mangroveAsset from "@/assets/mangrove-real.png.asset.json";
 import saolaAsset from "@/assets/saola-real.png.asset.json";
@@ -78,7 +80,15 @@ function Wiggle({ className = "" }: { className?: string }) {
 
 function Index() {
   const { campaigns, loading, donate } = useLiveCampaigns();
+  const { user } = useSession();
+  const navigate = useNavigate();
   const [pending, setPending] = useState<string | null>(null);
+
+  async function handleSignOut() {
+    await supabase.auth.signOut();
+    toast.success("Signed out. See you soon!");
+    void navigate({ to: "/", replace: true });
+  }
 
   const totals = campaigns.reduce(
     (acc, c) => ({
@@ -140,12 +150,26 @@ function Index() {
             ))}
           </ul>
           <div className="flex items-center gap-2">
-            <a
-              href="#"
-              className="hidden rounded-full px-4 py-2 text-sm font-semibold text-foreground/70 transition hover:text-foreground sm:inline-flex"
-            >
-              Sign in
-            </a>
+            {user ? (
+              <>
+                <span className="hidden max-w-[180px] truncate rounded-full border border-border bg-cream px-4 py-2 text-sm font-semibold text-foreground/70 sm:inline-flex">
+                  {user.email}
+                </span>
+                <button
+                  onClick={() => void handleSignOut()}
+                  className="hidden rounded-full px-4 py-2 text-sm font-semibold text-foreground/70 transition hover:text-foreground sm:inline-flex"
+                >
+                  Sign out
+                </button>
+              </>
+            ) : (
+              <Link
+                to="/auth"
+                className="hidden rounded-full px-4 py-2 text-sm font-semibold text-foreground/70 transition hover:text-foreground sm:inline-flex"
+              >
+                Sign in
+              </Link>
+            )}
             <a
               href="#campaigns"
               className="inline-flex items-center gap-1.5 rounded-full bg-jungle px-4 py-2 text-sm font-semibold text-cream transition hover:bg-jungle/90"
