@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
+import { submitDonation } from "@/lib/insights.functions";
 
 export type CampaignRow = Tables<"campaigns">;
 
@@ -43,12 +44,7 @@ export function useLiveCampaigns() {
   }, [load]);
 
   const donate = useCallback(async (campaignId: string, amount: number, donorName?: string) => {
-    const { error } = await supabase.from("donations").insert({
-      campaign_id: campaignId,
-      amount,
-      donor_name: donorName?.trim() ? donorName.trim() : "Anonymous",
-    });
-    if (error) throw error;
+    await submitDonation({ data: { campaignId, amount, donorName } });
     await load();
   }, [load]);
 
