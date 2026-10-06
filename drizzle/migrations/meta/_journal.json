@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1791296034283,
+      "tag": "0000_ai_insights_reviews_roles",
+      "breakpoints": true
+    }
+  ]
+}

@@ -1,5 +1,10 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { getCampaignInsights } from "@/lib/insights.functions";
+import { ChatAssistant } from "@/components/ChatAssistant";
+import saoMascot from "@/assets/sao-mascot.png";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useLiveCampaigns } from "@/lib/useLiveCampaigns";
@@ -100,6 +105,18 @@ function Index() {
     }),
     { raised: 0, donors: 0, hectares: 0, speciesProtected: 0 },
   );
+
+  const fetchInsights = useServerFn(getCampaignInsights);
+  const { data: insightData } = useQuery({
+    queryKey: ["campaign-insights", totals.raised, totals.donors],
+    queryFn: () => fetchInsights(),
+    enabled: !loading,
+    staleTime: 30_000,
+    placeholderData: keepPreviousData,
+  });
+  const insightById = Object.fromEntries(
+    (insightData?.insights ?? []).map((i) => [i.campaign_id, i]),
+  ) as Record<string, { summary: string; prediction: string }>;
 
   async function handleDonate(campaignId: string, amount?: number) {
     let value = amount;
@@ -365,6 +382,23 @@ function Index() {
                           />
                         </div>
                       </div>
+                      <div className="mt-4 rounded-xl border border-jungle/15 bg-jungle/5 p-3 text-xs leading-relaxed">
+                        <div className="mb-1 flex items-center gap-1.5 font-semibold uppercase tracking-wide text-jungle">
+                          <img src={saoMascot} alt="" width={16} height={16} className="size-4" loading="lazy" />
+                          AI live update
+                        </div>
+                        {insightById[c.id] ? (
+                          <>
+                            <p className="text-foreground/80">{insightById[c.id].summary}</p>
+                            <p className="mt-1 text-foreground/60">
+                              <span className="font-semibold text-bamboo">Forecast:</span>{" "}
+                              {insightById[c.id].prediction}
+                            </p>
+                          </>
+                        ) : (
+                          <p className="animate-pulse text-foreground/50">Analysing live progress…</p>
+                        )}
+                      </div>
                       <div className="mt-auto pt-5">
                         <div className="mb-3 flex items-center justify-between border-t border-border/70 pt-4 text-xs font-semibold text-foreground/60">
                           <span>
@@ -599,6 +633,7 @@ function Index() {
           </div>
         </div>
       </footer>
+      <ChatAssistant />
     </div>
   );
 }

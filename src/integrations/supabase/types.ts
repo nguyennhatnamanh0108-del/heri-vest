@@ -14,6 +14,38 @@ export type Database = {
   }
   public: {
     Tables: {
+      campaign_insights: {
+        Row: {
+          campaign_id: string
+          generated_at: string
+          prediction: string
+          raised_snapshot: number
+          summary: string
+        }
+        Insert: {
+          campaign_id: string
+          generated_at?: string
+          prediction?: string
+          raised_snapshot?: number
+          summary?: string
+        }
+        Update: {
+          campaign_id?: string
+          generated_at?: string
+          prediction?: string
+          raised_snapshot?: number
+          summary?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campaign_insights_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: true
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       campaigns: {
         Row: {
           blurb: string
@@ -71,6 +103,35 @@ export type Database = {
         }
         Relationships: []
       }
+      donation_reviews: {
+        Row: {
+          created_at: string
+          donation_id: string
+          reason: string
+          verdict: string
+        }
+        Insert: {
+          created_at?: string
+          donation_id: string
+          reason?: string
+          verdict?: string
+        }
+        Update: {
+          created_at?: string
+          donation_id?: string
+          reason?: string
+          verdict?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "donation_reviews_donation_id_fkey"
+            columns: ["donation_id"]
+            isOneToOne: true
+            referencedRelation: "donations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       donations: {
         Row: {
           amount: number
@@ -106,15 +167,39 @@ export type Database = {
           },
         ]
       }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "moderator" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -241,6 +326,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "moderator", "user"],
+    },
   },
 } as const
