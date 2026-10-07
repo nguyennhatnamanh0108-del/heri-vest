@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, isToolUIPart, type ToolUIPart } from "ai";
-import { MessageCircle, X, BarChart3 } from "lucide-react";
+import { MessageCircle, X } from "lucide-react";
 import {
   Conversation,
   ConversationContent,
@@ -83,7 +83,7 @@ export function ChatAssistant() {
                           const tp = p as ToolUIPart;
                           return (
                             <Tool key={i} defaultOpen={false}>
-                              <ToolHeader type={tp.type} state={tp.state} title="Checked live project stats" icon={<BarChart3 className="size-4" />} />
+                              <ToolHeader type={tp.type} state={tp.state} title="Checked live project stats" />
                               <ToolContent>
                                 <ToolOutput output={tp.output} errorText={tp.errorText} />
                               </ToolContent>
