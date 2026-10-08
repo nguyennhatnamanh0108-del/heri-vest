@@ -14,38 +14,6 @@ export const getCampaignInsights = createServerFn({ method: "GET" }).handler(asy
   }
 });
 
-export const submitDonation = createServerFn({ method: "POST" })
-  .inputValidator((d) =>
-    z
-      .object({
-        campaignId: z.string().uuid(),
-        amount: z.number().positive().max(100000),
-        donorName: z.string().max(80).optional(),
-        message: z.string().max(500).optional(),
-      })
-      .parse(d),
-  )
-  .handler(async ({ data }) => {
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { data: row, error } = await supabaseAdmin
-      .from("donations")
-      .insert({
-        campaign_id: data.campaignId,
-        amount: Math.round(data.amount * 100) / 100,
-        donor_name: data.donorName?.trim() || "Anonymous",
-        message: data.message?.trim() || null,
-      })
-      .select("id, campaign_id, amount, donor_name, message")
-      .single();
-    if (error) throw new Error("Could not record donation");
-    try {
-      const { reviewDonation } = await import("./insights.server");
-      await reviewDonation(supabaseAdmin, { ...row, amount: Number(row.amount) });
-    } catch (e) {
-      console.error("donation review failed", e);
-    }
-    return { ok: true };
-  });
 
 export const getFlaggedDonations = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
