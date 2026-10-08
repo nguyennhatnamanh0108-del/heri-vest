@@ -13,6 +13,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
+import { Route as DonateReturnRouteImport } from './routes/donate.return'
+import { Route as ApiPublicVnpayIpnRouteImport } from './routes/api/public/vnpay-ipn'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -34,18 +36,32 @@ const ApiChatRoute = ApiChatRouteImport.update({
   path: '/api/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DonateReturnRoute = DonateReturnRouteImport.update({
+  id: '/donate/return',
+  path: '/donate/return',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicVnpayIpnRoute = ApiPublicVnpayIpnRouteImport.update({
+  id: '/api/public/vnpay-ipn',
+  path: '/api/public/vnpay-ipn',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/api/chat': typeof ApiChatRoute
+  '/donate/return': typeof DonateReturnRoute
+  '/api/public/vnpay-ipn': typeof ApiPublicVnpayIpnRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/api/chat': typeof ApiChatRoute
+  '/donate/return': typeof DonateReturnRoute
+  '/api/public/vnpay-ipn': typeof ApiPublicVnpayIpnRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -53,13 +69,34 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/auth': typeof AuthRoute
   '/api/chat': typeof ApiChatRoute
+  '/donate/return': typeof DonateReturnRoute
+  '/api/public/vnpay-ipn': typeof ApiPublicVnpayIpnRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/auth' | '/api/chat'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/auth'
+    | '/api/chat'
+    | '/donate/return'
+    | '/api/public/vnpay-ipn'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/auth' | '/api/chat'
-  id: '__root__' | '/' | '/admin' | '/auth' | '/api/chat'
+  to:
+    | '/'
+    | '/admin'
+    | '/auth'
+    | '/api/chat'
+    | '/donate/return'
+    | '/api/public/vnpay-ipn'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/auth'
+    | '/api/chat'
+    | '/donate/return'
+    | '/api/public/vnpay-ipn'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -67,6 +104,8 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRoute
   AuthRoute: typeof AuthRoute
   ApiChatRoute: typeof ApiChatRoute
+  DonateReturnRoute: typeof DonateReturnRoute
+  ApiPublicVnpayIpnRoute: typeof ApiPublicVnpayIpnRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -99,6 +138,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/donate/return': {
+      id: '/donate/return'
+      path: '/donate/return'
+      fullPath: '/donate/return'
+      preLoaderRoute: typeof DonateReturnRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/vnpay-ipn': {
+      id: '/api/public/vnpay-ipn'
+      path: '/api/public/vnpay-ipn'
+      fullPath: '/api/public/vnpay-ipn'
+      preLoaderRoute: typeof ApiPublicVnpayIpnRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -107,6 +160,8 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRoute,
   AuthRoute: AuthRoute,
   ApiChatRoute: ApiChatRoute,
+  DonateReturnRoute: DonateReturnRoute,
+  ApiPublicVnpayIpnRoute: ApiPublicVnpayIpnRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
