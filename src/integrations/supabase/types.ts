@@ -167,6 +167,69 @@ export type Database = {
           },
         ]
       }
+      payment_orders: {
+        Row: {
+          amount_usd: number
+          amount_vnd: number
+          campaign_id: string
+          created_at: string
+          donation_id: string | null
+          donor_name: string
+          id: string
+          message: string | null
+          paid_at: string | null
+          provider_txn_no: string | null
+          response_code: string | null
+          status: string
+          txn_ref: string
+        }
+        Insert: {
+          amount_usd: number
+          amount_vnd: number
+          campaign_id: string
+          created_at?: string
+          donation_id?: string | null
+          donor_name?: string
+          id?: string
+          message?: string | null
+          paid_at?: string | null
+          provider_txn_no?: string | null
+          response_code?: string | null
+          status?: string
+          txn_ref: string
+        }
+        Update: {
+          amount_usd?: number
+          amount_vnd?: number
+          campaign_id?: string
+          created_at?: string
+          donation_id?: string | null
+          donor_name?: string
+          id?: string
+          message?: string | null
+          paid_at?: string | null
+          provider_txn_no?: string | null
+          response_code?: string | null
+          status?: string
+          txn_ref?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payment_orders_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payment_orders_donation_id_fkey"
+            columns: ["donation_id"]
+            isOneToOne: false
+            referencedRelation: "donations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           id: string
