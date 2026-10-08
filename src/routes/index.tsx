@@ -129,10 +129,8 @@ function Index() {
     setPending(campaignId);
     try {
       await donate(campaignId, value);
-      toast.success(`Thank you! $${value.toLocaleString()} added to this project.`);
     } catch {
-      toast.error("Could not record that donation. Please try again.");
-    } finally {
+      toast.error("Online payments aren't available right now. Please try again soon.");
       setPending(null);
     }
   }

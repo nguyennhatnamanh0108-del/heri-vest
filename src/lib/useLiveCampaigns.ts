@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
-import { submitDonation } from "@/lib/insights.functions";
+import { createVnpayPayment } from "@/lib/payments.functions";
 
 export type CampaignRow = Tables<"campaigns">;
 
@@ -43,10 +43,11 @@ export function useLiveCampaigns() {
     };
   }, [load]);
 
+  /** Starts a real VNPay checkout and redirects the browser to it. */
   const donate = useCallback(async (campaignId: string, amount: number, donorName?: string) => {
-    await submitDonation({ data: { campaignId, amount, donorName } });
-    await load();
-  }, [load]);
+    const { url } = await createVnpayPayment({ data: { campaignId, amount, donorName } });
+    window.location.href = url;
+  }, []);
 
   return { campaigns, loading, donate, refresh: load };
 }
