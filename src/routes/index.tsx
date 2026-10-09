@@ -407,25 +407,12 @@ function Index() {
                             {Math.round(Number(c.hectares_goal)).toLocaleString()} ha
                           </span>
                         </div>
-                        <div className="flex flex-wrap gap-2">
-                          {donationPresets.map((amt) => (
-                            <button
-                              key={amt}
-                              onClick={() => void handleDonate(c.id, amt)}
-                              disabled={pending === c.id}
-                              className="inline-flex flex-1 items-center justify-center rounded-full border border-border bg-background px-3 py-2 text-xs font-semibold transition hover:border-jungle hover:text-jungle disabled:opacity-50"
-                            >
-                              ${amt}
-                            </button>
-                          ))}
-                          <button
-                            onClick={() => void handleDonate(c.id)}
-                            disabled={pending === c.id}
-                            className="inline-flex items-center gap-1.5 rounded-full bg-lacquer px-4 py-2 text-xs font-semibold uppercase tracking-wide text-cream transition hover:bg-lacquer/90 disabled:opacity-50"
-                          >
-                            {pending === c.id ? "Sending…" : "Donate →"}
-                          </button>
-                        </div>
+                        <button
+                          onClick={() => openDonate(c)}
+                          className="inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-lacquer px-4 py-3 text-sm font-semibold uppercase tracking-wide text-cream transition hover:bg-lacquer/90"
+                        >
+                          Donate with VNPay →
+                        </button>
                       </div>
                     </div>
                   </article>
