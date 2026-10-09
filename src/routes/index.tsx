@@ -615,7 +615,147 @@ function Index() {
           </div>
         </div>
       </footer>
+      <DonateDialog
+        campaign={donateTarget}
+        onClose={() => setDonateTarget(null)}
+        onPay={donate}
+      />
       <ChatAssistant />
     </div>
+  );
+}
+
+/* -------------------- Donate dialog -------------------- */
+
+const USD_TO_VND = 25_000;
+const vnd = (usd: number) => `${Math.round(usd * USD_TO_VND).toLocaleString("vi-VN")}₫`;
+
+function DonateDialog({
+  campaign,
+  onClose,
+  onPay,
+}: {
+  campaign: CampaignRow | null;
+  onClose: () => void;
+  onPay: (campaignId: string, amount: number, donorName?: string, message?: string) => Promise<void>;
+}) {
+  const [amount, setAmount] = useState<number>(50);
+  const [custom, setCustom] = useState("");
+  const [name, setName] = useState("");
+  const [message, setMessage] = useState("");
+  const [paying, setPaying] = useState(false);
+
+  const customValue = Number(custom);
+  const finalAmount = custom.trim() !== "" ? customValue : amount;
+  const valid = Number.isFinite(finalAmount) && finalAmount >= 1 && finalAmount <= 100000;
+
+  async function handlePay() {
+    if (!campaign || !valid) return;
+    setPaying(true);
+    try {
+      await onPay(campaign.id, finalAmount, name.trim() || undefined, message.trim() || undefined);
+      // Browser is redirected to VNPay; nothing more to do here.
+    } catch {
+      toast.error("Online payments aren't available right now. Please try again soon.");
+      setPaying(false);
+    }
+  }
+
+  return (
+    <Dialog open={!!campaign} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="max-w-md rounded-3xl">
+        <DialogHeader>
+          <DialogTitle className="font-serif text-2xl text-jungle">
+            Donate to {campaign?.title}
+          </DialogTitle>
+          <DialogDescription>
+            You'll be sent to VNPay's secure checkout to pay by card, bank transfer or QR code.
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="space-y-4">
+          <div>
+            <Label className="mb-2 block text-xs font-semibold uppercase tracking-wide">Amount</Label>
+            <div className="grid grid-cols-4 gap-2">
+              {donationPresets.map((amt) => (
+                <button
+                  key={amt}
+                  type="button"
+                  onClick={() => { setAmount(amt); setCustom(""); }}
+                  className={`rounded-full border px-3 py-2 text-sm font-semibold transition ${
+                    custom.trim() === "" && amount === amt
+                      ? "border-jungle bg-jungle text-cream"
+                      : "border-border bg-background hover:border-jungle hover:text-jungle"
+                  }`}
+                >
+                  ${amt}
+                </button>
+              ))}
+            </div>
+            <div className="relative mt-2">
+              <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm font-semibold text-foreground/50">$</span>
+              <Input
+                type="number"
+                min={1}
+                max={100000}
+                placeholder="Custom amount"
+                value={custom}
+                onChange={(e) => setCustom(e.target.value)}
+                className="pl-7"
+              />
+            </div>
+            {valid && (
+              <p className="mt-1.5 text-xs text-foreground/60">
+                ≈ {vnd(finalAmount)} charged in Vietnamese đồng
+              </p>
+            )}
+            {custom.trim() !== "" && !valid && (
+              <p className="mt-1.5 text-xs font-semibold text-lacquer">
+                Enter an amount between $1 and $100,000.
+              </p>
+            )}
+          </div>
+
+          <div>
+            <Label htmlFor="donor-name" className="mb-2 block text-xs font-semibold uppercase tracking-wide">
+              Your name (optional)
+            </Label>
+            <Input
+              id="donor-name"
+              placeholder="Anonymous"
+              maxLength={80}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="donor-message" className="mb-2 block text-xs font-semibold uppercase tracking-wide">
+              Message (optional)
+            </Label>
+            <Textarea
+              id="donor-message"
+              placeholder="A few kind words for the team…"
+              maxLength={500}
+              rows={2}
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+            />
+          </div>
+
+          <button
+            type="button"
+            onClick={() => void handlePay()}
+            disabled={!valid || paying}
+            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-lacquer px-6 py-3.5 text-sm font-semibold uppercase tracking-wide text-cream transition hover:bg-lacquer/90 disabled:opacity-50"
+          >
+            {paying ? "Connecting to VNPay…" : `Pay ${valid ? `$${finalAmount.toLocaleString()}` : ""} with VNPay →`}
+          </button>
+          <p className="text-center text-xs text-foreground/50">
+            Secure payment processed by VNPay. Your progress bar updates the moment the payment confirms.
+          </p>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }
