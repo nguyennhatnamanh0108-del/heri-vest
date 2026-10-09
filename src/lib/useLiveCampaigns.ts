@@ -44,8 +44,8 @@ export function useLiveCampaigns() {
   }, [load]);
 
   /** Starts a real VNPay checkout and redirects the browser to it. */
-  const donate = useCallback(async (campaignId: string, amount: number, donorName?: string) => {
-    const { url } = await createVnpayPayment({ data: { campaignId, amount, donorName } });
+  const donate = useCallback(async (campaignId: string, amount: number, donorName?: string, message?: string) => {
+    const { url } = await createVnpayPayment({ data: { campaignId, amount, donorName, message } });
     window.location.href = url;
   }, []);
 
