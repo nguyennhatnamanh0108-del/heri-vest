@@ -97,7 +97,7 @@ function Index() {
   const { campaigns, loading, donate } = useLiveCampaigns();
   const { user } = useSession();
   const navigate = useNavigate();
-  const [pending, setPending] = useState<string | null>(null);
+  const [donateTarget, setDonateTarget] = useState<CampaignRow | null>(null);
 
   async function handleSignOut() {
     await supabase.auth.signOut();
@@ -128,21 +128,8 @@ function Index() {
     (insightData?.insights ?? []).map((i) => [i.campaign_id, i]),
   ) as Record<string, { summary: string; prediction: string }>;
 
-  async function handleDonate(campaignId: string, amount?: number) {
-    let value = amount;
-    if (value == null) {
-      const input = window.prompt("Donation amount in USD", "75");
-      if (!input) return;
-      value = Number(input);
-      if (!Number.isFinite(value) || value <= 0) return;
-    }
-    setPending(campaignId);
-    try {
-      await donate(campaignId, value);
-    } catch {
-      toast.error("Online payments aren't available right now. Please try again soon.");
-      setPending(null);
-    }
+  function openDonate(campaign: CampaignRow) {
+    setDonateTarget(campaign);
   }
 
   return (
