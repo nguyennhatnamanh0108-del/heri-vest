@@ -7,8 +7,18 @@ import { ChatAssistant } from "@/components/ChatAssistant";
 import saoMascot from "@/assets/sao-mascot.png";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
-import { useLiveCampaigns } from "@/lib/useLiveCampaigns";
+import { useLiveCampaigns, type CampaignRow } from "@/lib/useLiveCampaigns";
 import { useSession } from "@/lib/useSession";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 
 import mangroveAsset from "@/assets/mangrove-real.png.asset.json";
 import saolaAsset from "@/assets/saola-real.png.asset.json";
