@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
 import { confirmVnpayReturn } from "@/lib/payments.functions";
+import { confirmPaypalReturn } from "@/lib/paypal.functions";
 
 export const Route = createFileRoute("/donate/return")({
   head: () => ({
@@ -22,14 +23,19 @@ type Result = Awaited<ReturnType<typeof confirmVnpayReturn>>;
 
 function ReturnPage() {
   const confirm = useServerFn(confirmVnpayReturn);
+  const confirmPaypal = useServerFn(confirmPaypalReturn);
   const [result, setResult] = useState<Result | null>(null);
 
   useEffect(() => {
     const params = Object.fromEntries(new URLSearchParams(window.location.search).entries());
-    confirm({ data: params })
-      .then(setResult)
+    if (params["cancelled"]) {
+      setResult({ status: "failed", amountUsd: null, title: null });
+      return;
+    }
+    const p = params["token"] ? confirmPaypal({ data: { token: params["token"] } }) : confirm({ data: params });
+    p.then((r) => setResult(r as Result))
       .catch(() => setResult({ status: "invalid", amountUsd: null, title: null }));
-  }, [confirm]);
+  }, [confirm, confirmPaypal]);
 
   const copy = !result
     ? { h: "Checking your payment…", p: "This only takes a moment." }
