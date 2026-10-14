@@ -178,6 +178,7 @@ export type Database = {
           id: string
           message: string | null
           paid_at: string | null
+          provider: string
           provider_txn_no: string | null
           response_code: string | null
           status: string
@@ -185,7 +186,7 @@ export type Database = {
         }
         Insert: {
           amount_usd: number
-          amount_vnd: number
+          amount_vnd?: number
           campaign_id: string
           created_at?: string
           donation_id?: string | null
@@ -193,6 +194,7 @@ export type Database = {
           id?: string
           message?: string | null
           paid_at?: string | null
+          provider?: string
           provider_txn_no?: string | null
           response_code?: string | null
           status?: string
@@ -208,6 +210,7 @@ export type Database = {
           id?: string
           message?: string | null
           paid_at?: string | null
+          provider?: string
           provider_txn_no?: string | null
           response_code?: string | null
           status?: string
