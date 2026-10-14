@@ -411,7 +411,7 @@ function Index() {
                           onClick={() => openDonate(c)}
                           className="inline-flex w-full items-center justify-center gap-1.5 rounded-full bg-lacquer px-4 py-3 text-sm font-semibold uppercase tracking-wide text-cream transition hover:bg-lacquer/90"
                         >
-                          Donate with VNPay →
+                          Donate →
                         </button>
                       </div>
                     </div>
@@ -627,8 +627,6 @@ function Index() {
 
 /* -------------------- Donate dialog -------------------- */
 
-const USD_TO_VND = 25_000;
-const vnd = (usd: number) => `${Math.round(usd * USD_TO_VND).toLocaleString("vi-VN")}₫`;
 
 function DonateDialog({
   campaign,
@@ -654,7 +652,7 @@ function DonateDialog({
     setPaying(true);
     try {
       await onPay(campaign.id, finalAmount, name.trim() || undefined, message.trim() || undefined);
-      // Browser is redirected to VNPay; nothing more to do here.
+      // Browser is redirected to PayPal; nothing more to do here.
     } catch {
       toast.error("Online payments aren't available right now. Please try again soon.");
       setPaying(false);
@@ -669,7 +667,7 @@ function DonateDialog({
             Donate to {campaign?.title}
           </DialogTitle>
           <DialogDescription>
-            You'll be sent to VNPay's secure checkout to pay by card, bank transfer or QR code.
+            You'll be sent to PayPal's secure checkout — pay with a credit/debit card or your PayPal account.
           </DialogDescription>
         </DialogHeader>
 
@@ -704,11 +702,6 @@ function DonateDialog({
                 className="pl-7"
               />
             </div>
-            {valid && (
-              <p className="mt-1.5 text-xs text-foreground/60">
-                ≈ {vnd(finalAmount)} charged in Vietnamese đồng
-              </p>
-            )}
             {custom.trim() !== "" && !valid && (
               <p className="mt-1.5 text-xs font-semibold text-lacquer">
                 Enter an amount between $1 and $100,000.
@@ -749,10 +742,10 @@ function DonateDialog({
             disabled={!valid || paying}
             className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-lacquer px-6 py-3.5 text-sm font-semibold uppercase tracking-wide text-cream transition hover:bg-lacquer/90 disabled:opacity-50"
           >
-            {paying ? "Connecting to VNPay…" : `Pay ${valid ? `$${finalAmount.toLocaleString()}` : ""} with VNPay →`}
+            {paying ? "Connecting to PayPal…" : `Pay ${valid ? `$${finalAmount.toLocaleString()}` : ""} with PayPal →`}
           </button>
           <p className="text-center text-xs text-foreground/50">
-            Secure payment processed by VNPay. Your progress bar updates the moment the payment confirms.
+            Secure payment processed by PayPal. No PayPal account needed for cards. Your progress bar updates the moment the payment confirms.
           </p>
         </div>
       </DialogContent>
