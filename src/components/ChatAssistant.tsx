@@ -17,7 +17,7 @@ import {
 } from "@/components/ai-elements/prompt-input";
 import { Shimmer } from "@/components/ai-elements/shimmer";
 import { Tool, ToolContent, ToolHeader, ToolOutput } from "@/components/ai-elements/tool";
-import saoMascot from "@/assets/sao-mascot.png";
+import saoMascot from "@/assets/sao-mascot.webp";
 
 const suggestions = [
   "Which project needs help most right now?",

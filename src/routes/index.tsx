@@ -4,7 +4,7 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { getCampaignInsights } from "@/lib/insights.functions";
 import { ChatAssistant } from "@/components/ChatAssistant";
-import saoMascot from "@/assets/sao-mascot.png";
+import saoMascot from "@/assets/sao-mascot.webp";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useLiveCampaigns, type CampaignRow } from "@/lib/useLiveCampaigns";
@@ -20,9 +20,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 
-import mangroveImg from "@/assets/mangrove-real.png";
-import saolaImg from "@/assets/saola-real.png";
-import elephantsImg from "@/assets/elephants-real.png";
+import mangroveImg from "@/assets/mangrove-real.webp";
+import saolaImg from "@/assets/saola-real.webp";
+import elephantsImg from "@/assets/elephants-real.webp";
 import heroImg from "@/assets/hero-valley.jpg";
 
 export const Route = createFileRoute("/")({
