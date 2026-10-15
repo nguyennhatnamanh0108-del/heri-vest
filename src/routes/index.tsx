@@ -20,9 +20,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 
-import mangroveAsset from "@/assets/mangrove-real.png.asset.json";
-import saolaAsset from "@/assets/saola-real.png.asset.json";
-import elephantsAsset from "@/assets/elephants-real.png.asset.json";
+import mangroveImg from "@/assets/mangrove-real.png";
+import saolaImg from "@/assets/saola-real.png";
+import elephantsImg from "@/assets/elephants-real.png";
 import heroImg from "@/assets/hero-valley.jpg";
 
 export const Route = createFileRoute("/")({
@@ -50,9 +50,9 @@ export const Route = createFileRoute("/")({
 });
 
 const imageBySlug: Record<string, string> = {
-  "mangrove-halong": mangroveAsset.url,
-  "saola-pu-mat": saolaAsset.url,
-  "elephants-yok-don": elephantsAsset.url,
+  "mangrove-halong": mangroveImg,
+  "saola-pu-mat": saolaImg,
+  "elephants-yok-don": elephantsImg,
 };
 
 const donationPresets = [25, 50, 100, 250];
