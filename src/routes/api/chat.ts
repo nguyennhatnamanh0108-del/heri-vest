@@ -1,8 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { convertToModelMessages, isStepCount, streamText, tool, type UIMessage } from "ai";
 import { z } from "zod";
-import { createGatewayModel, responsesProviderOptions } from "@/lib/ai/gateway.server";
-import { getLovableAiGatewayRunId, withLovableAiGatewayRunIdHeader } from "@/lib/ai/run-id.server";
+import { AI_MODEL } from "@/lib/ai/gateway.server";
 
 export const Route = createFileRoute("/api/chat")({
   server: {
@@ -12,10 +11,9 @@ export const Route = createFileRoute("/api/chat")({
         const messages = (body.messages ?? []).slice(-30);
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
         const { getCampaignStats } = await import("@/lib/insights.server");
-        const { model, runIdFetch } = createGatewayModel(getLovableAiGatewayRunId(request));
 
         const result = streamText({
-          model,
+          model: AI_MODEL,
           instructions:
             "You are Sao, the friendly guide of Heri-Vest — a crowdfunding site for wildlife and nature conservation in Vietnam. " +
             "Help visitors (often teens) understand the projects and choose one to support. Be warm, concise, and clear. " +
@@ -30,14 +28,10 @@ export const Route = createFileRoute("/api/chat")({
               execute: async () => getCampaignStats(supabaseAdmin),
             }),
           },
-          stopWhen: isStepCount(50),
+          stopWhen: isStepCount(10),
           abortSignal: request.signal,
-          providerOptions: responsesProviderOptions,
         });
-        return withLovableAiGatewayRunIdHeader(
-          result.toUIMessageStreamResponse({ sendReasoning: true }),
-          runIdFetch,
-        );
+        return result.toUIMessageStreamResponse({ sendReasoning: true });
       },
     },
   },

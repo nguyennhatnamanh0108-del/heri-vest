@@ -1,6 +1,6 @@
 import { Output, streamText } from "ai";
 import { z } from "zod";
-import { createGatewayModel, responsesProviderOptions } from "@/lib/ai/gateway.server";
+import { AI_MODEL } from "@/lib/ai/gateway.server";
 
 type Admin = (typeof import("@/integrations/supabase/client.server"))["supabaseAdmin"];
 
@@ -85,9 +85,8 @@ export async function getOrRefreshInsights(admin: Admin): Promise<CampaignInsigh
     return (cached ?? []) as CampaignInsight[];
   }
 
-  const { model } = createGatewayModel();
   const result = streamText({
-    model,
+    model: AI_MODEL,
     instructions:
       "You write live progress updates for Heri-Vest, a Vietnam wildlife & nature crowdfunding site aimed at teens and young adults. " +
       "For each campaign write: summary — one upbeat, concrete sentence (max 22 words) on current progress using the real numbers; " +
@@ -95,7 +94,6 @@ export async function getOrRefreshInsights(admin: Admin): Promise<CampaignInsigh
       "If daysToGoal is null, say there isn't enough donation activity yet to forecast and invite the first gifts. Never invent numbers. Amounts are USD.",
     prompt: JSON.stringify(stats),
     output: Output.object({ schema: insightSchema }),
-    providerOptions: responsesProviderOptions,
   });
   const out = await result.output;
   const now = new Date().toISOString();
@@ -127,15 +125,13 @@ export async function reviewDonation(
     .gte("created_at", since)
     .order("created_at", { ascending: false })
     .limit(30);
-  const { model } = createGatewayModel();
   const result = streamText({
-    model,
+    model: AI_MODEL,
     instructions:
       "You screen donations on a conservation crowdfunding site for spam, fraud, test-card abuse, offensive names/messages, or bot bursts. " +
       "Return verdict 'suspicious' only with a concrete reason; otherwise 'ok' with a short reason. Reason max 25 words.",
     prompt: JSON.stringify({ donation, donationsInLast10Minutes: burst ?? [] }),
     output: Output.object({ schema: reviewSchema }),
-    providerOptions: responsesProviderOptions,
   });
   const out = await result.output;
   await admin.from("donation_reviews").upsert({

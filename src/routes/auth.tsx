@@ -172,7 +172,7 @@ function AuthPage() {
         </div>
 
         <p className="mt-6 text-center text-xs text-foreground/50">
-          Protected by Lovable Cloud auth · Your data stays private
+          Protected by Supabase auth · Your data stays private
         </p>
       </div>
     </div>
